@@ -1,18 +1,35 @@
-const colors = ["green", "red", "rgba(133,122,200)", "#f15025"];
-const btn = document.getElementById("btn");
-const color = document.querySelector(".color");
+'use strict';
+// set initial count to 0
+let count = 0;
+const value = document.querySelector("#value");
 
-btn.addEventListener('click', function (){
-    // get random number between 0 - 3(array length)
-    const randomNumber = getRandomNumber();
-    console.log(randomNumber);
-    //apply color in "colors" array to background color of document body
-    document.body.style.backgroundColor = colors[randomNumber];
-    //change text inside "color" span to current color code
-    color.textContent = colors[randomNumber];
+// select all buttons to use forEach method on the nodelist returned (nodelist is array-like)
+const btns = document.querySelectorAll(".btn");
+
+//parameter parsed into forEach callback function reps each item/element in the 'btns' nodelist
+btns.forEach(function (btn) {
+    // e parameter represents event object to target which btn was clicked
+    btn.addEventListener('click', function (e){
+        const styles =  e.currentTarget.classList;
+        // conditional statements to check if currentTarget containes certain classes
+        if (styles.contains('decrease')){
+            count--;
+        } else if (styles.contains('increase')){
+            count++;
+        } else if (styles.contains('reset')){
+            count = 0;
+        }
+        // check if count is greater than, less than or equal to 0 then change value color
+        if (count > 0){
+            value.style.color = 'green';
+        }
+        if (count < 0){
+            value.style.color = 'red';
+        }
+        if (count === 0){
+            value.style.color = "black";
+        }
+        value.textContent = count;
+        console.log(value);
+    });
 });
-
-// get random number by multiplying the length of the array with the result of math.random which is always between 0 - 1, never 1...then wrap with math.floor to round down to the nearest interger (e.g 1.56767 becomes 1)
-function getRandomNumber (){
-    return Math.floor(Math.random() * colors.length);
-}
