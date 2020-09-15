@@ -3,30 +3,87 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Modal</title>
+    <title>Q & A</title>
     <!-- font-awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <!-- extra fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
     <!-- styles -->
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- hero -->
-    <header class="hero">
-      <div class="banner">
-        <h1>modal project</h1>
-        <button class="btn modal-btn">open modal</button>
+    <section class="questions">
+      <!-- title -->
+      <div class="title">
+        <h2>general qusetions</h2>
       </div>
-    </header>
-    <!-- end of hero -->
-    <!-- modal -->
-    <div class="modal-overlay">
-      <div class="modal-container">
-          <h3>modal content</h3>
-          <button class="close-btn">
-            <i class="fas fa-times"></i>
+      <!-- single question -->
+      <article class="question">
+        <!-- question title -->
+        <div class="question-title">
+          <p>do you accept all major credit cards?</p>
+          <button type="button" class="question-btn">
+            <span class="plus-icon">
+              <i class="far fa-plus-square"></i>
+            </span>
+            <span class="minus-icon">
+              <i class="far fa-minus-square"></i>
+            </span>
           </button>
-      </div>
-    </div>
+        </div>
+        <!-- question text -->
+        <div class="question-text">
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores repellat consectetur, perspiciatis quisquam consequuntur in necessitatibus sit, corrupti facere officiis maxime voluptas ad deserunt fuga, odit suscipit eaque.</p>
+        </div>
+      </article>
+      <!-- end single question -->
+      <!-- single question -->
+      <article class="question">
+        <!-- question title -->
+        <div class="question-title">
+          <p>do you have promotions often?</p>
+          <button type="button" class="question-btn">
+            <span class="plus-icon">
+              <i class="far fa-plus-square"></i>
+            </span>
+            <span class="minus-icon">
+              <i class="far fa-minus-square"></i>
+            </span>
+          </button>
+        </div>
+        <!-- question text -->
+        <div class="question-text">
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores repellat consectetur, perspiciatis quisquam consequuntur in necessitatibus sit, corrupti facere officiis maxime voluptas ad deserunt fuga, odit suscipit eaque.</p>
+        </div>
+      </article>
+      <!-- end single question -->
+      <!-- single question -->
+      <article class="question">
+        <!-- question title -->
+        <div class="question-title">
+          <p>do you use organic ingredients?</p>
+          <button type="button" class="question-btn">
+            <span class="plus-icon">
+              <i class="far fa-plus-square"></i>
+            </span>
+            <span class="minus-icon">
+              <i class="far fa-minus-square"></i>
+            </span>
+          </button>
+        </div>
+        <!-- question text -->
+        <div class="question-text">
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores repellat consectetur, perspiciatis quisquam consequuntur in necessitatibus sit, corrupti facere officiis maxime voluptas ad deserunt fuga, odit suscipit eaque.</p>
+        </div>
+      </article>
+      <!-- end single question -->
+    </section>
     <!-- javascript -->
     <script src="app.js"></script>
   </body>
