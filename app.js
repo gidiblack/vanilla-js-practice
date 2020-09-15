@@ -1,12 +1,17 @@
+// select modal-btn,modal-overlay,close-btn
+// listen for click events on modal-btn and close-btn
+// when user clicks modal-btn add .open-modal to modal-overlay
+// when user clicks close-btn remove .open-modal from modal-overlay
 'use strict';
-const toggleBtn = document.querySelector('.sidebar-toggle');
+// select DOM elements
+const modalBtn = document.querySelector('.modal-btn');
 const closeBtn = document.querySelector('.close-btn');
-const sidebar = document.querySelector('.sidebar');
+const modal = document.querySelector('.modal-overlay');
 
-toggleBtn.addEventListener('click', function (){
-    sidebar.classList.toggle('show-sidebar');
+modalBtn.addEventListener('click', function (){
+    modal.classList.add('open-modal');
 });
 
 closeBtn.addEventListener('click', function (){
-    sidebar.classList.remove('show-sidebar');
+    modal.classList.remove('open-modal');
 });
