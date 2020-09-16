@@ -72,23 +72,38 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
-  {
-    id: 10,
-    title: "steak dinner",
-    category: "dinner",
-    price: 44.99,
-    img: "./images/item-10.jpeg",
-    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
-  }
 ];
 
 const sectionCenter = document.querySelector('.section-center');
-const btnContainer = document.querySelector('.btn-container');
+const filterBtns = document.querySelectorAll('.filter-btn');
 
-// load items and buttons when window loads
+// load items when window loads
 window.addEventListener('DOMContentLoaded', function (){
   displayMenuItems(menu);
-  displayMenuBtns();
+
+});
+
+// iterate thru each filter btn and add click event listener 
+filterBtns.forEach(function(btn){
+
+  btn.addEventListener('click', function(e){
+    // dataset property targets html element with the "data-" prefix attribute
+    const category = e.currentTarget.dataset.category;
+    // create new array using filter method on menu array to get category from items in 'menu'
+    const menuCategory = menu.filter(function (menuItem){
+      // check if menuItem category property is equal to the category dataset and return menuItem
+      if(menuItem.category === category) {
+        return menuItem;
+        // e.g if category parsed into menuItem param is breakfast, only menu items with category property of breakfast will populate the new menuCategory array
+      }
+    });
+    // check if category parsed into menuItem param is all then display all items - 'menu' array else display 'menuCategory' array that was populated by filter method
+    if (category === "all"){
+      displayMenuItems(menu);
+    } else {
+      displayMenuItems(menuCategory);
+    }
+  }); 
 });
 
 function displayMenuItems(menuItems){
@@ -110,45 +125,4 @@ function displayMenuItems(menuItems){
   displayMenu = displayMenu.join('');
   // display menu inside parent div
   sectionCenter.innerHTML = displayMenu;
-}
-
-function displayMenuBtns(){
-  // get unique categories by calling reduce method which takes in two parameters in the callback function and must always return the first function param - values which references the returned array containing 'all'.
-  const categories = menu.reduce(function(values, item){
-    // check if values does NOT include a category property from item object then add that category to values that already has initial string of "all"
-    if(!values.includes(item.category)){
-      values.push(item.category);
-    }  
-    return values
-  }, ['all']); // reduce method usually needs an initial value - this is set to an array with one string of "all" because all is not a preset category
-  // map thru each item in categories array, return template literal, then remove commas with join method 
-  const categoryBtns = categories.map(function(category){
-    return `<button class="filter-btn" data-category=${category} type="button">${category}</button>`;
-  }).join('');
-  // add btns to html
-  btnContainer.innerHTML = categoryBtns;
-  // select btns after adding to html
-  const filterBtns = document.querySelectorAll('.filter-btn');
-
-  // iterate thru each filter btn and add click event listener 
-  filterBtns.forEach(function(btn){
-    btn.addEventListener('click', function(e){
-      // dataset property targets html element with the "data-" prefix attribute
-      const category = e.currentTarget.dataset.category;
-      // create new array using filter method on menu array to get category from items in 'menu'
-      const menuCategory = menu.filter(function (menuItem){
-        // check if menuItem category property is equal to the category dataset and return menuItem
-        if(menuItem.category === category) {
-          return menuItem;
-          // e.g if category parsed into menuItem param is breakfast, only menu items with category property of breakfast will populate the new menuCategory array
-        }
-      });
-      // check if category parsed into menuItem param is all then display all items - 'menu' array else display 'menuCategory' array that was populated by filter method
-      if (category === "all"){
-        displayMenuItems(menu);
-      } else {
-        displayMenuItems(menuCategory);
-      }
-    }); 
-  });
 }
