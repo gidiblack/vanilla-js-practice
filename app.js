@@ -1,25 +1,55 @@
-// MDN
-// The DOMContentLoaded event fires when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading.
-// The load event is fired when the whole page has loaded, including all dependent resources such as stylesheets and images.
+// pageYOffset is a read - only window property that returns the number of pixels the document has been scrolled vertically.
+// slice extracts a section of a string without modifying original string
+//offsetTop - A Number, representing the top position of the element, in pixels
 
-const btn = document.querySelector('.switch-btn');
-const video = document.querySelector('.video-container');
+// ********** set date ************
+const date = document.getElementById('date');
+date.innerHTML = new Date().getFullYear();
 
-btn.addEventListener('click', function(){
-    // check if btn does NOT contain class of slide
-    if(!btn.classList.contains('slide')){
-        // add class of slide
-        btn.classList.add('slide');
-        // pause video
-        video.pause();
+// ********** close links ************
+const navToggle = document.querySelector('.nav-toggle');
+const linksContainer = document.querySelector('.links-container');
+const links = document.querySelector('.links');
+// click event listener on nav toggler
+navToggle.addEventListener('click', function(){
+    // Element.getBoundingClientRect() method returns the size of an element and its position relative to the viewport.
+    const containerHeight = linksContainer.getBoundingClientRect().height;
+    const linksHeight = links.getBoundingClientRect().height;
+    // check if parent div of links has a hieght of zero 
+    if (containerHeight === 0) {
+        // set parent div height to height of links
+        linksContainer.style.height = `${linksHeight}px`;
     } else {
-        btn.classList.remove('slide');
-        video.play();
+        // set height to zero
+        linksContainer.style.height = 0;
     }
-})
-
-const preloader = document.querySelector('.preloader');
-
-window.addEventListener('load', function(){
-    preloader.classList.add('hide-preloader');
 });
+
+// ********** fixed navbar ************
+const navbar = document.getElementById('nav');
+const topLink = document.querySelector('.top-link');
+// scroll event listener on window element
+window.addEventListener('scroll', function(){
+    // get vertical scroll height
+    const scrollHeight = window.pageYOffset;
+    // get navbar height
+    const navHeight = navbar.getBoundingClientRect().height;
+    // check if vertical scroll height is greater than navbar height
+    if (scrollHeight > navHeight) {
+        // add fixed nav class
+        navbar.classList.add('fixed-nav');
+    } else {
+        // remove fixed nav class
+        navbar.classList.remove('fixed-nav');
+    }
+    // check if scrollHeight is greater than 400
+    if (scrollHeight > 400){
+        // add class to show top link
+        topLink.classList.add('show-link');
+    } else {
+        // remove class to show top link 
+        topLink.classList.remove('show-link');
+    }
+});
+// ********** smooth scroll ************
+// select links
