@@ -1,203 +1,159 @@
-// ****** SELECT ITEMS **********
-const alert = document.querySelector('.alert');
-const form = document.querySelector('.grocery-form');
-const grocery = document.getElementById('grocery');
-const submitBtn = document.querySelector('.submit-btn');
-const container = document.querySelector('.grocery-container');
-const list = document.querySelector('.grocery-list');
-const clearBtn = document.querySelector('.clear-btn');
-
-// declare edit options
-let editElement;
-let editFlag = false;
-let editID = "";
-
-// ****** EVENT LISTENERS **********
-// submit form
-form.addEventListener('submit', addItem);
-// clear items
-clearBtn.addEventListener('click', clearItems);
-// load items from local storage
-window.addEventListener('DOMContentLoaded', setUpItems);
-
-// ****** FUNCTIONS **********
-function addItem(e){
-    e.preventDefault();
-    const value = grocery.value;
-    // set id to string of new date in milliseconds
-    const id = new Date().getTime().toString();
-    // check if value returns true and edidFlag is false
-    if(value && !editFlag){
-        // call create list item function and parse in 'id's and 'value'
-        createListItem(id, value);
-        // display alert
-        displayAlert("item added to list", "success");
-        // show container
-        container.classList.add('show-container');
-        // add to local storage
-        addToLocalStorage(id, value);
-        // set back to default
-        setBackToDefault();
+const quizData = [
+    {
+        question: "What is the most used programming language in 2019?",
+        a: "Java",
+        b: "C",
+        c: "Python",
+        d: "JavaScript",
+        correct: "d",
+    },
+    {
+        question: "Who is the President of US?",
+        a: "Florin Pop",
+        b: "Donald Trump",
+        c: "Ivan Saldano",
+        d: "Mihai Andrei",
+        correct: "b",
+    },
+    {
+        question: "What does HTML stand for?",
+        a: "Hypertext Markup Language",
+        b: "Cascading Style Sheet",
+        c: "Jason Object Notation",
+        d: "Helicopters Terminals Motorboats Lamborginis",
+        correct: "a",
+    },
+    {
+        question: "What year was JavaScript launched?",
+        a: "1996",
+        b: "1995",
+        c: "1994",
+        d: "none of the above",
+        correct: "b",
+    },
+    {
+        question: "When did Nigerian become a Republic?",
+        a: "1996",
+        b: "1963",
+        c: "1960",
+        d: "none of the above",
+        correct: "b",
+    },
+    {
+        question: "What is the capital of Kenya?",
+        a: "Nairobi",
+        b: "Tokyo",
+        c: "Lagos",
+        d: "Kigali",
+        correct: "a",
+    },
+    {
+        question: "Who was the President of the US in 2010?",
+        a: "Donald Trump",
+        b: "George Bush",
+        c: "Barrack Obama",
+        d: "Bill CLinton",
+        correct: "c",
+    },
+    {
+        question: "What does DVD stand for?",
+        a: "Digital Version Database",
+        b: "Diagonal Visible Divide",
+        c: "Digital Versatile Disk",
+        d: "none of the above",
+        correct: "c",
+    },
+    {
+        question: "Which of these is NOT a programming language?",
+        a: "Python",
+        b: "Ruby",
+        c: "C+",
+        d: "Bootstrap",
+        correct: "d",
+    },
+    {
+        question: "Which of these is an output device?",
+        a: "LED Screen",
+        b: "Keyboard",
+        c: "Touchpad",
+        d: "Scanner",
+        correct: "a",
     }
-    // check if value and edidFlag returns true
-    else if(value && editFlag){
-        editElement.innerHTML = value;
-        displayAlert('item edited', 'success');
-        // edit local storage
-        editLocalStorage(editID, value);
-        setBackToDefault();
-    }
-    else{
-        displayAlert("please enter value", "danger");
-    }
+];
+// declare element variables
+const quiz = document.getElementById('quiz');
+const answerEls = document.querySelectorAll(".answer");
+const questionEl = document.getElementById('question');
+const a_text = document.getElementById('a_text');
+const b_text = document.getElementById('b_text');
+const c_text = document.getElementById('c_text');
+const d_text = document.getElementById('d_text');
+const submitBtn = document.getElementById('submit');
+const answers = document.querySelectorAll('.answer');
+// set quiz and score counters to 0
+let currentQuiz = 0;
+let score = 0;
+
+loadQuiz();
+// function to load quiz data when the page loads 
+function loadQuiz(){
+    // invoke function to deselect answers
+    deselectAnswers();
+    // get first quiz data by declaring const
+    const currentQuizData = quizData[currentQuiz]; 
+    // set inner text of question element 
+    questionEl.innerText = currentQuizData.question;
+    a_text.innerText = currentQuizData.a;
+    b_text.innerText = currentQuizData.b;
+    c_text.innerText = currentQuizData.c;
+    d_text.innerText = currentQuizData.d;
 }
 
-// display alert function
-function displayAlert(text, action){
-    alert.textContent = text;
-    alert.classList.add(`alert-${action}`);
-    // remove alert after 1.5s
-    setTimeout(() => {
-        alert.textContent = '';
-        alert.classList.remove(`alert-${action}`);
-    }, 1500);
-}
-
-// clear items function
-function clearItems (){
-    const items = document.querySelectorAll('.grocery-item');
-    // check if items lenght is more than 0
-    if(items.length > 0){
-        // remove each item
-        items.forEach(function(item){
-            list.removeChild(item);
-        });
-    }
-    container.classList.remove('show-container');
-    displayAlert('list cleared', 'danger');
-    setBackToDefault();
-    localStorage.removeItem('list');
-}
-
-// delete item function
-function deleteItem(e){
-    const element = e.currentTarget.parentElement.parentElement;
-    const id = element.dataset.id;
-    list.removeChild(element);
-    if(list.children.length === 0){
-        container.classList.remove('show-container');
-    }
-    displayAlert('item removed', 'danger');
-    setBackToDefault();
-    // remove from local storage
-    removeFromLocalStorage(id);
-}
-
-// edit item function
-function editItem(e){
-    const element = e.currentTarget.parentElement.parentElement;
-    // set edit item
-    editElement = e.currentTarget.parentElement.previousElementSibling;
-    // set form value
-    grocery.value = editElement.innerHTML
-    // set edit flag to true
-    editFlag = true;
-    // set edit id to dataset id generated
-    editID = element.dataset.id;
-    submitBtn.textContent = 'edit';
-}
-
-// set to default state
-function setBackToDefault(){
-    grocery.value = "";
-    editFlag = false;
-    editID = "";
-    submitBtn.textContent = 'submit';
- }
-
-// ****** LOCAL STORAGE **********
-function addToLocalStorage(id, value){
-    // save id and value parameters to local storage id and vale properties
-    const listItems = {id:id, value:value};
-    // set items to the result of the ternary operator in the function
-    let items = getLocalStorage();
-    // push listItems to items array
-    items.push(listItems);
-    // convert items array to string with stringify method and set to list in local storage 
-    localStorage.setItem('list', JSON.stringify(items));
-    console.log(localStorage.getItem('list'));
-}
-
-function removeFromLocalStorage(id){
-    // set items to the result of the ternary operator in the function
-    let items = getLocalStorage();
-    // filter thru each of the items (filter works with 'let' keyword)
-    items = items.filter(function(item){
-        // check for item the doesn't match the id of item clicked
-        if(item.id !== id){
-            // return that item
-            return item
+// Get value of selected answer
+function getSelected(){
+    // set answer to undefined so as to return it when the function executes
+    let answer = undefined;
+    // loop thru radio buttons and thier values
+    answerEls.forEach((answerEl) => {
+        // check if radio btn is selected
+        if (answerEl.checked) {
+            // set answer to id of selected radio element
+            answer = answerEl.id;
         }
     });
-    // set local storage to new items returned after removing the one matching the id clicked
-    localStorage.setItem('list', JSON.stringify(items));
+    return answer;
 }
-
-function editLocalStorage(id, value){
-    // set items to the result of the ternary operator in the function
-    let items = getLocalStorage();
-    // map thru each of the items to get return separate arrays similar to filter method
-    items = items.map(function(item){
-        // check id of item is the same as id parsed into the function
-        if(item.id === id){
-            // set new value of item
-            item.value = value;
-        }
-        // else return item as is
-        return item;
+// function to deselect radio buttons when new quiz loads
+function deselectAnswers() {
+    answerEls.forEach((answerEl) => {
+        answerEl.checked = false;
     });
-    // set local storage to new items returned after removing the one matching the id clicked
-    localStorage.setItem('list', JSON.stringify(items));
 }
 
-function getLocalStorage(){
-    // if 'list' exists in localStorage set items to list, if list doesn't exist in localStorage set items to empty array
-    return localStorage.getItem('list') ? JSON.parse(localStorage.getItem('list')) : [];
-}
-
-// ****** SETUP ITEMS **********
-function setUpItems(){
-    let items = getLocalStorage();
-    if(items.length > 0){
-        items.forEach(function(item){
-            createListItem(item.id, item.value);
-        });
-        container.classList.add('show-container');
+// click event listener on submit btn
+submitBtn.addEventListener('click', () => {
+    // store answer returned from getSelected function in 'answer' const
+    const answer = getSelected();
+    
+    if (answer) {
+        // check if answer selected is correct
+        if (answer === quizData[currentQuiz].correct) {
+            // increment score counter by 1
+            score++;
+        }
+        // increment quiz counter by 1
+        currentQuiz++;
+        // check if quiz counter is less than total quiz length
+        if (currentQuiz < quizData.length) {
+            // load new quiz
+            loadQuiz();
+        } else {
+            // else display this message
+            quiz.innerHTML = `
+                <h2>You answered ${score}/${quizData.length} questions correctly.</h2>
+                
+                <button onclick="location.reload()">Reload</button>
+            `;
+        }
     }
-}
-
-function createListItem(id, value){
-    const element = document.createElement('article');
-        // add class to new element
-        element.classList.add('grocery-item');
-        // add id to new element
-        const attr = document.createAttribute('data-id');
-        attr.value = id;
-        element.setAttributeNode(attr);
-        element.innerHTML = `<p class="title">${value}</p>
-                            <div class="btn-container">
-                                <button class="edit-btn">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>`
-        // set up event listeners on buttons after you have access to them since they're added dynamically
-        const deleteBtn = element.querySelector('.delete-btn');
-        const editBtn = element.querySelector('.edit-btn');
-        deleteBtn.addEventListener('click', deleteItem);
-        editBtn.addEventListener('click', editItem);
-        // append child
-        list.appendChild(element);
-}
+});

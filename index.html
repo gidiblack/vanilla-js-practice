@@ -1,47 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grocery Bud</title>
-    <!-- font-awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-    />
-    <!-- styles -->
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <section class="section-center">
-      <!-- form -->
-      <form class="grocery-form">
-        <p class="alert"></p>
-        <h3>grocery bud</h3>
-        <div class="form-control">
-          <input type="text" id="grocery" placeholder="e.g. eggs" />
-          <button type="submit" class="submit-btn">submit</button>
-        </div>
-      </form>
-      <!-- list -->
-      <div class="grocery-container">
-        <div class="grocery-list">
-          <!-- <article class="grocery-item">
-            <p class="title">item</p>
-            <div class="btn-container">
-              <button class="edit-btn">
-                <i class="fas fa-edit"></i>
-              </button>
-              <button class="delete-btn">
-                <i class="fas fa-trash"></i>
-              </button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz App</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="quiz-container" id="quiz">
+            <div class="quiz-header">
+                <h2 id="question">Question text</h2>
+                <ul>
+                    <li>
+                        <input
+                            type="radio"
+                            id="a"
+                            name="answer"
+                            class="answer"
+                        />
+                        <label id="a_text" for="a">Question</label>
+                    </li>
+                    <li>
+                        <input
+                            type="radio"
+                            id="b"
+                            name="answer"
+                            class="answer"
+                        />
+                        <label id="b_text" for="b">Question</label>
+                    </li>
+                    <li>
+                        <input
+                            type="radio"
+                            id="c"
+                            name="answer"
+                            class="answer"
+                        />
+                        <label id="c_text" for="c">Question</label>
+                    </li>
+                    <li>
+                        <input
+                            type="radio"
+                            id="d"
+                            name="answer"
+                            class="answer"
+                        />
+                        <label id="d_text" for="d">Question</label>
+                    </li>
+                </ul>
             </div>
-          </article> -->
+            <button id="submit">Submit</button>
         </div>
-        <button class="clear-btn">clear items</button>
-      </div>
-    </section>
-    <!-- javascript -->
-    <script src="app.js"></script>
-  </body>
+    </body>
+    <script src="app.js" defer></script>
 </html>
