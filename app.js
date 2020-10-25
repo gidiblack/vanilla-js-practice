@@ -28,7 +28,7 @@ function addItem(e){
     const id = new Date().getTime().toString();
     // check if value returns true and edidFlag is false
     if(value && !editFlag){
-        // call create list item function and parse in 'id' and 'value'
+        // call create list item function and parse in 'id's and 'value'
         createListItem(id, value);
         // display alert
         displayAlert("item added to list", "success");
